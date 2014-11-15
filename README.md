@@ -2,8 +2,6 @@
 gherkinfmt - Gherkin Formater
 =============================
 
-[![Build Status](https://travis-ci.org/muhqu/gherkinfmt.png?branch=master)](https://travis-ci.org/muhqu/gherkinfmt)
-
 `gherkinfmt` is a command line tool to format `.feature` files which use the [Gherkin][] language that drives Story/Feature based Behavior Driven Development. 
 
 `gherkinfmt` is written in [golang][] and is just a frontend to the [go-gherkin][] package which covers all the parsing and formating.
