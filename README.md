@@ -21,7 +21,7 @@ $ gherkinfmt -version # verify install
 
 ### Install binary
 
-> TODO: add binary packages for mac, linux and win
+Grap a binary release from the [releases](https://github.com/muhqu/gherkinfmt/releases) section.
 
 
 Usage
