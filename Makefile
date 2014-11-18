@@ -1,17 +1,25 @@
 
 
-all: build dist
+all: version build dist
+
+GIT_VERSION=$(shell git describe HEAD 2>/dev/null || git describe --tags HEAD)
+
+version: 
+	@echo "version: $(GIT_VERSION)" >&2
+	@cat version.go | sed -e 's/\(VERSION = "\)[^\"]*\("\)/\1'$(GIT_VERSION)'\2/' > version.go.tmp
+	@diff version.go.tmp version.go || (cat version.go.tmp > version.go)
+	@rm version.go.tmp
 
 build: build/gherkinfmt.osx build/gherkinfmt.linux build/gherkinfmt.exe
 
-build/gherkinfmt.osx: gherkinfmt.go
-	GOOS=darwin GOARCH=386 CGO_ENABLED=0 go build -o $@ gherkinfmt.go
+build/gherkinfmt.osx: *.go
+	GOOS=darwin GOARCH=386 CGO_ENABLED=0 go build -o $@ $
 
-build/gherkinfmt.linux: gherkinfmt.go
-	GOOS=linux GOARCH=386 CGO_ENABLED=0 go build -o $@ gherkinfmt.go
+build/gherkinfmt.linux: *.go
+	GOOS=linux GOARCH=386 CGO_ENABLED=0 go build -o $@ $
 
-build/gherkinfmt.exe: gherkinfmt.go
-	GOOS=windows GOARCH=386 CGO_ENABLED=0 go build -o $@ gherkinfmt.go
+build/gherkinfmt.exe: *.go
+	GOOS=windows GOARCH=386 CGO_ENABLED=0 go build -o $@ $
 
 dist: dist/gherkinfmt.osx.zip dist/gherkinfmt.linux.zip dist/gherkinfmt.win.zip
 

@@ -80,7 +80,7 @@ IO Options
   -v                         more verbose error messages
 
 Misc Options
-  -version                   version: %[2]s
+  -version                   version: %[2]s  (go-gherkin: %[3]s)
   -help                      this help
 
 Examples:
@@ -89,7 +89,7 @@ Examples:
 
   $ cat path/to/some.feature | %[1]s -centersteps
 
-`, self, gherkin.VERSION)
+`, self, VERSION, gherkin.VERSION)
 	}
 
 	flag.BoolVar(&colorsYes, "color", false, "explicitly enable colors")
@@ -102,7 +102,7 @@ Examples:
 	flag.BoolVar(&verbose, "v", false, "more verbose error messages")
 	flag.StringVar(&inputPath, "in", "", "path to input file")
 	flag.StringVar(&outputPath, "out", "", "path to output file")
-	flag.BoolVar(&runVersion, "version", false, "version: "+gherkin.VERSION)
+	flag.BoolVar(&runVersion, "version", false, "version: "+VERSION+"  (go-gherkin: "+gherkin.VERSION+")")
 	flag.Parse()
 
 	if !verbose {
@@ -125,7 +125,7 @@ func usageErrWithVerboseHint(err error) {
 
 func main() {
 	if runVersion {
-		fmt.Fprintf(os.Stdout, "%s\n", gherkin.VERSION)
+		fmt.Fprintf(os.Stdout, "%s (go-gherkin %s)\n", VERSION, gherkin.VERSION)
 		return
 	}
 	if inputPath != "" {
