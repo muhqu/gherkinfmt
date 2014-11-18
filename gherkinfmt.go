@@ -136,12 +136,7 @@ func main() {
 			return
 		}
 	} else {
-		st, err := os.Stdin.Stat()
-		if err != nil {
-			usageErr(err)
-			return
-		}
-		if st.Size() > 0 {
+		if !util.IsTerminal(os.Stdin) {
 			inputReader = os.Stdin
 		}
 	}
