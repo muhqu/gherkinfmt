@@ -39,6 +39,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"runtime"
 
 	"github.com/muhqu/go-gherkin"
 	"github.com/muhqu/go-gherkin/formater"
@@ -164,7 +165,7 @@ func main() {
 	} else if colorsNo {
 		colors = false
 	} else if outputWriter == os.Stdout {
-		colors = util.IsTerminal(os.Stdout)
+		colors = util.IsTerminal(os.Stdout) && runtime.GOOS != "windows"
 	}
 
 	fmtr := &formater.GherkinPrettyFormater{
