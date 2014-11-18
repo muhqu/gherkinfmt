@@ -1,6 +1,6 @@
 
 
-all: version build dist
+all: version build dist dist-info
 
 GIT_VERSION=$(shell git describe HEAD 2>/dev/null || git describe --tags HEAD)
 
@@ -23,7 +23,7 @@ build/gherkinfmt.exe: *.go
 
 dist: dist/gherkinfmt.osx.zip dist/gherkinfmt.linux.zip dist/gherkinfmt.win.zip
 
-dist/gherkinfmt.osx.zip: build/gherkinfmt.osx
+dist/gherkinfmt.osx.zip: build/gherkinfmt.osx build/gherkinfmt.osx.sha1
 	- rm dist/gherkinfmt.osx.zip
 	- rm -r dist/gherkinfmt.osx
 	mkdir -p dist/gherkinfmt.osx/gherkinfmt
@@ -31,7 +31,7 @@ dist/gherkinfmt.osx.zip: build/gherkinfmt.osx
 	cd dist/gherkinfmt.osx/; zip -r gherkinfmt.zip gherkinfmt; mv gherkinfmt.zip ../gherkinfmt.osx.zip
 	- rm -r dist/gherkinfmt.osx
 
-dist/gherkinfmt.linux.zip: build/gherkinfmt.linux
+dist/gherkinfmt.linux.zip: build/gherkinfmt.linux build/gherkinfmt.linux.sha1
 	- rm dist/gherkinfmt.linux.zip
 	- rm -r dist/gherkinfmt.linux
 	mkdir -p dist/gherkinfmt.linux/gherkinfmt
@@ -39,7 +39,7 @@ dist/gherkinfmt.linux.zip: build/gherkinfmt.linux
 	cd dist/gherkinfmt.linux/; zip -r gherkinfmt.zip gherkinfmt; mv gherkinfmt.zip ../gherkinfmt.linux.zip
 	- rm -r dist/gherkinfmt.linux
 
-dist/gherkinfmt.win.zip: build/gherkinfmt.exe
+dist/gherkinfmt.win.zip: build/gherkinfmt.exe build/gherkinfmt.exe.sha1
 	- rm dist/gherkinfmt.win.zip
 	- rm -r dist/gherkinfmt.win
 	mkdir -p dist/gherkinfmt.win/gherkinfmt
@@ -47,4 +47,20 @@ dist/gherkinfmt.win.zip: build/gherkinfmt.exe
 	cd dist/gherkinfmt.win/; zip -r gherkinfmt.zip gherkinfmt; mv gherkinfmt.zip ../gherkinfmt.win.zip
 	- rm -r dist/gherkinfmt.win
 
-.PHONY: all build dist
+%.sha1: %
+	openssl sha1 $^ | cut -d' ' -f2 | tee $@
+
+clean:
+	- rm -r build/ dist/
+
+dist-info:
+	@echo 
+	@printf "| %-20s | %-46s |\n" "Executable" "Checksum";
+	@echo "|----------------------|------------------------------------------------|";
+	@find ./build -name '*.sha1'\
+	 | while read file; do \
+	   printf "| %-20s | %-46s |\n" "$$(basename $$file .sha1)" "SHA1($$(cat $$file))"; \
+	   done
+	@echo 
+
+.PHONY: all build dist clean dist-info
