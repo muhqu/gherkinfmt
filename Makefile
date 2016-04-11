@@ -4,7 +4,7 @@ all: version build dist dist-info
 
 GIT_VERSION=$(shell git describe HEAD 2>/dev/null || git describe --tags HEAD)
 
-version: 
+version:
 	@echo "version: $(GIT_VERSION)" >&2
 	@cat version.go | sed -e 's/\(VERSION = "\)[^\"]*\("\)/\1'$(GIT_VERSION)'\2/' > version.go.tmp
 	@diff version.go.tmp version.go || (cat version.go.tmp > version.go)
@@ -13,13 +13,13 @@ version:
 build: build/gherkinfmt.osx build/gherkinfmt.linux build/gherkinfmt.exe
 
 build/gherkinfmt.osx: *.go
-	GOOS=darwin GOARCH=386 CGO_ENABLED=0 go build -o $@ $
+	GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -o $@
 
 build/gherkinfmt.linux: *.go
-	GOOS=linux GOARCH=386 CGO_ENABLED=0 go build -o $@ $
+	GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o $@
 
 build/gherkinfmt.exe: *.go
-	GOOS=windows GOARCH=386 CGO_ENABLED=0 go build -o $@ $
+	GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build -o $@
 
 dist: dist/gherkinfmt.osx.zip dist/gherkinfmt.linux.zip dist/gherkinfmt.win.zip
 
@@ -54,13 +54,13 @@ clean:
 	- rm -r build/ dist/
 
 dist-info:
-	@echo 
+	@echo
 	@printf "| %-20s | %-46s |\n" "Executable" "Checksum";
 	@echo "|----------------------|------------------------------------------------|";
 	@find ./build -name '*.sha1'\
 	 | while read file; do \
 	   printf "| %-20s | %-46s |\n" "$$(basename $$file .sha1)" "SHA1($$(cat $$file))"; \
 	   done
-	@echo 
+	@echo
 
 .PHONY: all build dist clean dist-info
