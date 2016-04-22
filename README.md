@@ -30,6 +30,7 @@ gherkinfmt OPTIONS
 
 Formating Options
   -centersteps[=false]       control step alignment
+  -fixands[=false]           successive step keywords replaced by 'And'
   -nosteps[=false]           hide steps
   -nocomments[=false]        hide comments
   -noaligncomments[=false]   disable auto alignment of subsequent comments
