@@ -8,6 +8,7 @@ Usage
 
 	Formating Options
 	  -centersteps[=false]       control step alignment
+	  -fixands[=false]           successive step keywords replaced by 'And'
 	  -nosteps[=false]           hide steps
 	  -nocomments[=false]        hide comments
 	  -noaligncomments[=false]   disable auto alignment of subsequent comments
@@ -53,6 +54,7 @@ var colorsNo bool
 var centerSteps bool
 var skipSteps bool
 var skipComments bool
+var fixAnd bool
 var noCommentAlign bool
 var commentAlignMinIndent int
 var verbose bool
@@ -69,6 +71,7 @@ func init() {
 
 Formating Options
   -centersteps[=false]       control step alignment
+  -fixands[=false]           successive step keywords replaced by 'And'
   -nosteps[=false]           hide steps
   -nocomments[=false]        hide comments
   -noaligncomments[=false]   disable auto alignment of subsequent comments
@@ -96,6 +99,7 @@ Examples:
 	flag.BoolVar(&colorsYes, "color", false, "explicitly enable colors")
 	flag.BoolVar(&colorsNo, "nocolor", false, "explicitly disable colors")
 	flag.BoolVar(&centerSteps, "centersteps", false, "formating option, to control step alignment")
+	flag.BoolVar(&fixAnd, "fixands", false, "successive step keywords replaced by 'And'")
 	flag.BoolVar(&skipSteps, "nosteps", false, "omit steps, just print scenario headlines")
 	flag.BoolVar(&skipComments, "nocomments", false, "hide comments")
 	flag.BoolVar(&noCommentAlign, "noaligncomments", false, "disable auto alignment of subsequent comments")
@@ -166,6 +170,7 @@ func main() {
 	fmtr := &formater.GherkinPrettyFormater{
 		AnsiColors:             colors,
 		CenterSteps:            centerSteps,
+		FixAnd:                 fixAnd,
 		SkipSteps:              skipSteps,
 		SkipComments:           skipComments,
 		NoAlignComments:        noCommentAlign,
